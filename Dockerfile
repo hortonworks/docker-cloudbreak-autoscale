@@ -13,7 +13,8 @@ ENV VERSION 1.15.0-dev.238
 ADD https://s3-eu-west-1.amazonaws.com/maven.sequenceiq.com/releases/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
 
 # extract schema files
-RUN unzip periscope.jar schema/* -d /
+RUN ( unzip periscope.jar schema/* -d / ) || \
+    ( unzip periscope.jar BOOT-INF/classes/schema/* -d /tmp/ && mv /tmp/BOOT-INF/classes/schema/ /schema/ )
 
 WORKDIR /
 
