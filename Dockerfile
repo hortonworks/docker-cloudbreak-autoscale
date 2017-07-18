@@ -8,7 +8,7 @@ COPY bootstrap/start_periscope_app.sh /start_periscope_app.sh
 RUN apt-get update
 RUN apt-get install zip
 
-ENV VERSION 1.16.2-rc.20
+ENV VERSION 1.16.2-rc.21
 # install the periscope app
 ADD https://s3-eu-west-1.amazonaws.com/maven.sequenceiq.com/releases/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
 
