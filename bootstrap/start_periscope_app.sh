@@ -20,4 +20,4 @@ if [ "$EXPOSE_JMX_METRICS" == "true" ]; then
   CB_JAVA_OPTS="$CB_JAVA_OPTS -javaagent:/jmx_prometheus_javaagent=127.0.0.1:$EXPOSE_JMX_METRICS_PORT:$EXPOSE_JMX_METRICS_CONFIG"
 fi
 
-java $CB_JAVA_OPTS -jar /periscope.jar
+eval "(java $CB_JAVA_OPTS -jar /periscope.jar) & JAVAPID=\$!; trap \"kill \$JAVAPID; wait \$JAVAPID\" SIGINT SIGTERM; wait \$JAVAPID"
