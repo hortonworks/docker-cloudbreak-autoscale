@@ -10,10 +10,10 @@ RUN apt-get install zip
 
 ENV VERSION 2.4.0-dev.192
 # install the periscope app
-ADD https://s3-eu-west-1.amazonaws.com/maven.sequenceiq.com/releases/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
+ADD https://cloudbreak-maven.s3.amazonaws.com/releases/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
 
 # add jmx exporter
-ADD https://s3.eu-central-1.amazonaws.com/hortonworks-prometheus/jmx_prometheus_javaagent-0.10.jar /jmx_prometheus_javaagent.jar
+ADD jmx_prometheus_javaagent-0.10.jar /jmx_prometheus_javaagent.jar
 
 # extract schema files
 RUN ( unzip periscope.jar schema/* -d / ) || \
