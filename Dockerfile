@@ -1,5 +1,5 @@
 FROM java:openjdk-8
-MAINTAINER SequenceIQ
+MAINTAINER Hortonworks
 
 # Install starter script for the Periscope application
 COPY bootstrap/start_periscope_app.sh /start_periscope_app.sh
