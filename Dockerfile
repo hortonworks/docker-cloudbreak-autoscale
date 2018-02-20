@@ -1,12 +1,11 @@
-FROM java:openjdk-8
+FROM openjdk:8u162-jdk-slim
 MAINTAINER Hortonworks
 
 # Install starter script for the Periscope application
 COPY bootstrap/start_periscope_app.sh /start_periscope_app.sh
 
 # Install zip
-RUN apt-get update
-RUN apt-get install zip
+RUN apt-get update --no-install-recommends && apt-get install -y zip procps
 
 ENV VERSION 2.7.0-dev.15
 # install the periscope app
