@@ -8,7 +8,7 @@ COPY bootstrap/start_periscope_app.sh /start_periscope_app.sh
 RUN apt-get update
 RUN apt-get install zip
 
-ENV VERSION 2.6.0-rc.4
+ENV VERSION 2.7.0-dev.3
 # install the periscope app
 ADD https://cloudbreak-maven.s3.amazonaws.com/releases/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
 
