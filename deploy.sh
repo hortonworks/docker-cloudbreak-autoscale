@@ -22,26 +22,17 @@ install_deps() {
 fi
 }
 
-checkout_version_branch() {
-  declare VERSION_TYPE="$(echo ${VERSION} | awk -F"-" '{ print $2 }' | awk -F"." '{ print $1 }')"
-
-  declare VERSION_BRANCH="master"
-  if [[ "$VERSION_TYPE" = "rc" ]]; then
-    VERSION_BRANCH="$(echo ${VERSION} | awk -F"." '{ print "rc-"$1"."$2 }')"
-  elif [[ "$VERSION_TYPE" = "" ]]; then
-    VERSION_BRANCH="$(echo ${VERSION} | awk -F"." '{ print "release-"$1"."$2 }')"
-  fi
-
-  debug "checking out branch: $VERSION_BRANCH"
-
-  git checkout ${VERSION_BRANCH}
+get_latest_maven_version() {
+  curl -sL ${MAVEN_METADATA_URL} | sed -n '/<version>/ h; $ {x;s/ *<.\?version>//gp;}'
 }
 
 new_version() {
   install_deps
-  checkout_version_branch "$@"
+  declare NEW_VERSION=${1:-$(get_latest_maven_version)}
 
-  debug "building docker image for version: $VERSION"
+  debug "building docker image for version: $NEW_VERSION"
+
+  sed -i "/^ENV VERSION/ s/VERSION .*/VERSION ${NEW_VERSION}/" Dockerfile
 
   git commit -m "Release ${NEW_VERSION}" Dockerfile
   git tag ${NEW_VERSION}
@@ -51,7 +42,7 @@ new_version() {
 }
 
 main() {
-  : ${VERSION:?"required!"}
+  : ${MAVEN_METADATA_URL:?"required!"}
   : ${DOCKER_IMAGE:?"required!"}
   : ${DOCKERHUB_USERNAME:?"required!"}
   : ${DOCKERHUB_PASSWORD:?"required!"}
