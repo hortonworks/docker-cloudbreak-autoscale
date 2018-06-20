@@ -40,9 +40,10 @@ checkout_version_branch() {
 new_version() {
   install_deps
   checkout_version_branch "$@"
+  NEW_VERSION="$VERSION"
 
-  sed -i "/^ENV VERSION/ s/VERSION .*/VERSION ${NEW_VERSION}/" Dockerfile
   debug "building docker image for version: $VERSION"
+  sed -i "/^ENV VERSION/ s/VERSION .*/VERSION ${NEW_VERSION}/" Dockerfile
 
   git commit -m "Release ${NEW_VERSION}" Dockerfile
   git tag ${NEW_VERSION}
