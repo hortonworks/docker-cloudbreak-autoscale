@@ -19,10 +19,12 @@ install_deps() {
     curl -L https://github.com/progrium/dockerhub-tag/releases/download/v0.2.0/dockerhub-tag_0.2.0_$(uname)_x86_64.tgz | tar -xz -C /usr/local/bin/
   else
     debug "dockerhub-tag already installed"
-fi
+  fi
 }
 
-checkout_version_branch() {
+new_version() {
+  install_deps
+
   declare VERSION_TYPE="$(echo ${VERSION} | awk -F"-" '{ print $2 }' | awk -F"." '{ print $1 }')"
 
   declare VERSION_BRANCH="master"
@@ -35,21 +37,15 @@ checkout_version_branch() {
   debug "checking out branch: $VERSION_BRANCH"
 
   git checkout ${VERSION_BRANCH}
-}
-
-new_version() {
-  install_deps
-  checkout_version_branch "$@"
-  NEW_VERSION="$VERSION"
 
   debug "building docker image for version: $VERSION"
-  sed -i "/^ENV VERSION/ s/VERSION .*/VERSION ${NEW_VERSION}/" Dockerfile
+  sed -i "/^ENV VERSION/ s/VERSION .*/VERSION ${VERSION}/" Dockerfile
 
-  git commit -m "Release ${NEW_VERSION}" Dockerfile
-  git tag ${NEW_VERSION}
-  git push origin master --tags
+  git commit -m "Release ${VERSION}" Dockerfile
+  git tag ${VERSION}
+  git push origin ${VERSION_BRANCH} --tags
   
-  dockerhub-tag set ${DOCKER_IMAGE} $NEW_VERSION $NEW_VERSION /
+  dockerhub-tag set ${DOCKER_IMAGE} ${VERSION} ${VERSION} /
 }
 
 main() {
