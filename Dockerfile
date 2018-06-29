@@ -1,4 +1,4 @@
-FROM openjdk:10.0.1-jdk-slim
+FROM openjdk:10-jdk-slim
 MAINTAINER Hortonworks
 
 # Install starter script for the Periscope application
