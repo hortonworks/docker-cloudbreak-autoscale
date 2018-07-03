@@ -16,7 +16,7 @@ debug() {
 install_deps() {
   if ! dockerhub-tag --version &>/dev/null ;then
     debug "installing dockerhub-tag binary to /usr/local/bin"
-    curl -L https://github.com/progrium/dockerhub-tag/releases/download/v0.2.0/dockerhub-tag_0.2.0_$(uname)_x86_64.tgz | tar -xz -C /usr/local/bin/
+    curl -L https://github.com/keyki/dockerhub-tag/releases/download/v0.2.1/dockerhub-tag_0.2.1_$(uname)_x86_64.tgz | tar -xz -C /usr/local/bin/
   else
     debug "dockerhub-tag already installed"
   fi
