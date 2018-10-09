@@ -48,7 +48,7 @@ main() {
   : ${DOCKERHUB_USERNAME:?"required!"}
   : ${DOCKERHUB_PASSWORD:?"required!"}
   : ${DEBUG:=1}
-  : ${REPO_URL:?required!"}
+  : ${REPO_URL:?"required!"}
 
   new_version "$@"
 }
