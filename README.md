@@ -4,7 +4,7 @@ Periscope on Docker
 This repository contains a Docker file to build a Docker image containing Periscope binary and DB schema scripts.
 The Periscope source code is available on [GitHub](https://github.com/sequenceiq/periscope).
 
-##Pull the image from Docker Repository
+## Pull the image from Docker Repository
 ```
 docker pull sequenceiq/periscope:0.5.3
 ```
