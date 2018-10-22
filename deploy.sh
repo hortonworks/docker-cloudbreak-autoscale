@@ -17,7 +17,7 @@ new_version() {
 
   declare VERSION_TYPE="$(echo ${VERSION} | awk -F"-" '{ print $2 }' | awk -F"." '{ print $1 }')"
 
-  declare VERSION_BRANCH="master"
+  declare VERSION_BRANCH="BUG-112369"
   if [[ "$VERSION_TYPE" = "rc" ]]; then
     VERSION_BRANCH="$(echo ${VERSION} | awk -F"." '{ print "rc-"$1"."$2 }')"
   elif [[ "$VERSION_TYPE" = "" ]]; then
