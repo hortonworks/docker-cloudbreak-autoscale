@@ -13,21 +13,11 @@ debug() {
 }
 
 
-install_deps() {
-  if ! dockerhub-tag --version &>/dev/null ;then
-    debug "installing dockerhub-tag binary to /usr/local/bin"
-    curl -L https://github.com/keyki/dockerhub-tag/releases/download/v0.2.1/dockerhub-tag_0.2.1_$(uname)_x86_64.tgz | tar -xz -C /usr/local/bin/
-  else
-    debug "dockerhub-tag already installed"
-  fi
-}
-
 new_version() {
-  install_deps
 
   declare VERSION_TYPE="$(echo ${VERSION} | awk -F"-" '{ print $2 }' | awk -F"." '{ print $1 }')"
 
-  declare VERSION_BRANCH="master"
+  declare VERSION_BRANCH="BUG-112369"
   if [[ "$VERSION_TYPE" = "rc" ]]; then
     VERSION_BRANCH="$(echo ${VERSION} | awk -F"." '{ print "rc-"$1"."$2 }')"
   elif [[ "$VERSION_TYPE" = "" ]]; then
@@ -45,7 +35,11 @@ new_version() {
   git tag ${VERSION}
   git push origin ${VERSION_BRANCH} --tags
   
-  dockerhub-tag set ${DOCKER_IMAGE} ${VERSION} ${VERSION} /
+  # Build docker and push to hortonworks repo
+  docker build -t ${DOCKER_IMAGE}:${VERSION} --build-arg=REPO_URL=${REPO_URL} --build-arg=VERSION=${VERSION} .
+  docker push ${DOCKER_IMAGE}:${VERSION}
+  docker rmi ${DOCKER_IMAGE}:${VERSION}
+
 }
 
 main() {
@@ -54,6 +48,7 @@ main() {
   : ${DOCKERHUB_USERNAME:?"required!"}
   : ${DOCKERHUB_PASSWORD:?"required!"}
   : ${DEBUG:=1}
+  : ${REPO_URL:?"required!"}
 
   new_version "$@"
 }

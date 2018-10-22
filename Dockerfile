@@ -1,5 +1,9 @@
-FROM openjdk:10-jdk-slim
+FROM hortonworks/hwx_openjdk:10-jdk-slim
 MAINTAINER Hortonworks
+
+# REPO URL to download jar
+ARG REPO_URL=http://repo.hortonworks.com/content/repositories/releases
+ARG VERSION=''
 
 # Install starter script for the Periscope application
 COPY bootstrap/start_periscope_app.sh /start_periscope_app.sh
@@ -9,7 +13,7 @@ RUN apt-get update --no-install-recommends && apt-get install -y zip procps
 
 ENV VERSION 2.10.0-dev.57
 # install the periscope app
-ADD https://cloudbreak-maven.s3.amazonaws.com/releases/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
+ADD ${REPO_URL}/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
 
 # add jmx exporter
 ADD jmx_prometheus_javaagent-0.10.jar /jmx_prometheus_javaagent.jar
