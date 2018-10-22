@@ -11,7 +11,7 @@ COPY bootstrap/start_periscope_app.sh /start_periscope_app.sh
 # Install zip
 RUN apt-get update --no-install-recommends && apt-get install -y zip procps
 
-ENV VERSION ${VERSION}
+ENV VERSION 2.10.0-dev.57
 # install the periscope app
 ADD ${REPO_URL}/com/sequenceiq/periscope/$VERSION/periscope-$VERSION.jar /periscope.jar
 
